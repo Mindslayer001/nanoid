@@ -1,6 +1,25 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 5.1.5
+* Fixed latest version on npm after 3.x release.
+
+## 5.1.4
+* Fixed latest version on npm after 3.x release.
+
+## 5.1.3
+* Fixed React Native support (by @steida).
+
+## 5.1.2
+* Fixed module docs.
+
+## 5.1.1
+* Fixed opaque types support for non-secure generator.
+* Added JSR support.
+
+## 5.1.0
+* Added opaque types support (by @kossnocorp).
+
 ## 5.0.9
 * Fixed a way to break Nano ID by passing non-integer size (by @myndzi).
 
@@ -43,6 +62,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Removed CommonJS support. Nano ID 4 will work only with ESM applications.
   We will support 3.x branch with CommonJS for users who can’t migrate to ESM.
 * Removed Node.js 10 and Node.js 12 support.
+* Reduced npm package size.
+
+## 3.3.11
+* Fixed React Native support.
+
+## 3.3.10
+* Fixed React Native support (by @steida).
+
+## 3.3.9
 * Reduced npm package size.
 
 ## 3.3.8

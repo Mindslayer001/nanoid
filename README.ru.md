@@ -3,7 +3,7 @@
 <img src="https://ai.github.io/nanoid/logo.svg" align="right"
      alt="Логотип Nano ID от Антона Ловчикова" width="180" height="94">
 
-[English](./README.md) | **Русский** | [简体中文](./README.zh-CN.md) | [Bahasa Indonesia](./README.id-ID.md)
+[English](./README.md) | [日本語](./README.ja.md) | **Русский** | [简体中文](./README.zh-CN.md) | [Bahasa Indonesia](./README.id-ID.md) | [한국어](./README.ko.md)
 
 Генератор уникальных ID для JavaScript — лёгкий, безопасный,
 ID можно применять в URL.
@@ -45,6 +45,10 @@ model.id = nanoid() //=> "V1StGXR8_Z5jdHi6B-myT"
 - [Сравнение производительности](#сравнение-производительности)
 - [Безопасность](#безопасность)
 - [Подключение](#подключение)
+  - [ESM](#esm)
+  - [CommonJS](#commonjs)
+  - [JSR](#jsr)
+  - [CDN](#cdn)
 - [API](#api)
   - [Блокирующий](#блокирующий)
   - [Небезопасный](#небезопасный)
@@ -54,8 +58,8 @@ model.id = nanoid() //=> "V1StGXR8_Z5jdHi6B-myT"
   - [React](#react)
   - [React Native](#react-native)
   - [PouchDB и CouchDB](#pouchdb-и-couchdb)
-  - [Веб-воркеры](#веб-воркеры)
   - [Терминал](#терминал)
+  - [TypeScript](#typescript)
   - [Другие языки программирования](#другие-языки-программирования)
 - [Инструменты](#инструменты)
 
@@ -135,19 +139,58 @@ _См. также хорошую статью о теориях генерато
 
 ## Подключение
 
+### ESM
+
+Nano ID 5 работает с ESM-проектами (`import`) в тестах или скриптах для Node.js.
+
 ```bash
 npm install nanoid
 ```
 
-Nano ID 5 работает с ESM-проектами (`import`) в тестах или скриптах для Node.js.
-Для CommonJS `require()` вам нужна последняя версия Node.js 22.12
-(работает из коробки) или Node.js 20 (с флагом `--experimental-require-module`):
+### CommonJS
 
-Для Node.js 18 возьмите Nano ID 3.x (мы его всё ещё поддерживаем):
+На проектах с CommonJS вы можете использовать:
+
+- `require()` будет работать в последней версия Node.js 22.12 (из коробки)
+  или Node.js 20 (с флагом `--experimental-require-module`).
+
+- В более старых версиях Node.js можно использовать динамический импорт:
+
+  ```js
+  let nanoid
+  module.exports.createID = async () => {
+    if (!nanoid) ({ nanoid } = await import('nanoid'))
+    return nanoid() // => "V1StGXR8_Z5jdHi6B-myT"
+  }
+  ```
+
+- Или можно просто взять Nano ID 3.x (мы его всё ещё поддерживаем):
+
+  ```bash
+  npm install nanoid@3
+  ```
+
+### JSR
+
+[JSR](https://jsr.io) это замена npm с открытым управлением
+и активной разработкой (в отличие от npm).
 
 ```bash
-npm install nanoid@3
+npx jsr add @sitnik/nanoid
 ```
+
+Вы можете использовать пакет с JSR в Node.js, Deno, Bun.
+
+```js
+// Replace `nanoid` to `@sitnik/nanoid` in all imports
+import { nanoid } from '@sitnik/nanoid'
+```
+
+Для Deno установите через `deno add jsr:@sitnik/nanoid`
+или импортируйте `jsr:@sitnik/nanoid`.
+
+
+### CDN
 
 Для быстрого прототипирования вы можете подключить Nano ID с CDN без установки.
 Не используйте этот способ на реальном сайте, так как он сильно бьёт
@@ -331,22 +374,6 @@ db.put({
 ```
 
 
-### Веб-воркеры
-
-Веб-воркеры не имеют доступа к аппаратному генератору случайных чисел.
-
-Аппаратный генератор нужен, в том числе, для непредсказуемости ID. Например,
-когда доступ к секретному документу защищён ссылкой с уникальным ID.
-
-Если вам не нужна непредсказуемость ID, то в Веб-воркере можно использовать
-небезопасный генератор ID.
-
-```js
-import { nanoid } from 'nanoid/non-secure'
-nanoid() //=> "Uakgb_J5m9g-0JDMbcJqLJ"
-```
-
-
 ### Терминал
 
 Можно сгенерировать уникальный ID прямо из терминала, вызвав `npx nanoid`.
@@ -374,6 +401,30 @@ $ npx nanoid --alphabet abc --size 15
 bccbcabaabaccab
 ```
 
+### TypeScript
+
+Nano ID позволяет приводить сгенерированные строки к непрозрачным строкам в
+TypeScript. Например:
+
+```ts
+declare const userIdBrand: unique symbol
+type UserId = string & { [userIdBrand]: true }
+
+// Используйте явный параметр типа:
+mockUser(nanoid<UserId>())
+
+interface User {
+  id: UserId
+  name: string
+}
+
+const user: User = {
+  // Автоматически приводится к типу UserId:
+  id: nanoid(),
+  name: 'Alice'
+}
+```
+
 ### Другие языки программирования
 
 Nano ID был портирован на множество языков. Это полезно, чтобы сервер и клиент
@@ -385,13 +436,13 @@ Nano ID был портирован на множество языков. Это
 - [ColdFusion/CFML](https://github.com/JamoCA/cfml-nanoid)
 - [Crystal](https://github.com/mamantoha/nanoid.cr)
 - [Dart и Flutter](https://github.com/pd4d10/nanoid-dart)
-- [Deno](https://github.com/ianfabs/nanoid)
 - [Elixir](https://github.com/railsmechanic/nanoid)
+- [Gleam](https://github.com/0xca551e/glanoid)
 - [Go](https://github.com/jaevor/go-nanoid)
 - [Haskell](https://github.com/MichelBoucey/NanoID)
 - [Haxe](https://github.com/flashultra/uuid)
 - [Janet](https://sr.ht/~statianzo/janet-nanoid/)
-- [Java](https://github.com/Soundicly/jnanoid-enhanced)
+- [Java](https://github.com/wosherco/jnanoid-enhanced)
 - [Kotlin](https://github.com/viascom/nanoid-kotlin)
 - [MySQL/MariaDB](https://github.com/viascom/nanoid-mysql-mariadb)
 - [Nim](https://github.com/icyphox/nanoid.nim)

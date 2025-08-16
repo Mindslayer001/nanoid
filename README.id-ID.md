@@ -3,7 +3,7 @@
 <img src="https://ai.github.io/nanoid/logo.svg" align="right"
      alt="Logo Nano ID oleh Anton Lovchikov" width="180" height="94">
 
-[English](./README.md) | [Русский](./README.ru.md) | [简体中文](./README.zh-CN.md) | **Bahasa Indonesia**
+[English](./README.md) | [日本語](./README.ja.md) | [Русский](./README.ru.md) | [简体中文](./README.zh-CN.md) | **Bahasa Indonesia** | [한국어](./README.ko.md)
 
 Sebuah generator ID yang unik dalam bentuk string yang ringan, aman, serta _URL-friendly_ untuk JavaScript.
 
@@ -45,8 +45,8 @@ Mendukung penjelajah (browser) modern, IE [dengan Babel](https://developer.epage
   - [React](#react)
   - [React Native](#react-native)
   - [PouchDB dan CouchDB](#pouchdb-dan-couchdb)
-  - [Web Workers](#web-workers)
   - [CLI](#cli)
+  - [TypeScript](#typescript)
   - [Bahasa Pemrograman Lainnya](#bahasa-pemrograman-lainnya)
 - [Alat](#alat)
 
@@ -276,20 +276,6 @@ db.put({
 ```
 
 
-### Web Workers
-
-Web Workers tidak memiliki akses untuk secure random generator.
-
-Keamanan sangat penting pada ID yang mana setiap ID harus memiliki sifat tidak bisa diprediksi, seperti pada contoh use-case generasi link pada "access by URL". Apabila tidak memerlukan ID yang tidak bisa diprediksi, tetapi ingin/harus menggunakan Web Workers, dapat digunakan NanoID dengan API non-secure.
-
-```js
-import { nanoid } from 'nanoid/non-secure'
-nanoid() //=> "Uakgb_J5m9g-0JDMbcJqLJ"
-```
-
-Perhatian: ID yang dihasilkan dari non-secure dapat lebih mudah tabrakan / memiliki probabilitas collision yang lebih besar.
-
-
 ### CLI
 
 Nano ID dapat didapatkan dengan cara menggunakan `npx nanoid` pada Terminal. Hanya diperlukan Node.js untuk ini, dan tidak perlu mengunduh dan menginstall Nano ID dalam sistem.
@@ -302,6 +288,29 @@ LZfXLFzPPR4NNrgjlWDxn
 
 Bila ingin mengganti alfabet atau ukuran ID, dapat menggunakan [`nanoid-cli`](https://github.com/twhitbeck/nanoid-cli).
 
+### TypeScript
+
+Nano ID memungkinkan untuk mengubah string yang dihasilkan menjadi string opak
+dalam TypeScript. Sebagai contoh:
+
+```ts
+declare const userIdBrand: unique symbol
+type UserId = string & { [userIdBrand]: true }
+
+// Gunakan parameter tipe secara eksplisit:
+mockUser(nanoid<UserId>())
+
+interface User {
+  id: UserId
+  name: string
+}
+
+const user: User = {
+  // Secara otomatis diubah menjadi UserId:
+  id: nanoid(),
+  name: 'Alice'
+}
+```
 
 ### Bahasa Pemrograman Lainnya
 
@@ -315,11 +324,12 @@ Nano ID telah bermigrasi ke berbagai macam bahasa. Seluruh versi dapat digunakan
 - [Dart & Flutter](https://github.com/pd4d10/nanoid-dart)
 - [Deno](https://github.com/ianfabs/nanoid)
 - [Elixir](https://github.com/railsmechanic/nanoid)
+- [Gleam](https://github.com/0xca551e/glanoid)
 - [Go](https://github.com/jaevor/go-nanoid)
 - [Haskell](https://github.com/MichelBoucey/NanoID)
 - [Haxe](https://github.com/flashultra/uuid)
 - [Janet](https://sr.ht/~statianzo/janet-nanoid/)
-- [Java](https://github.com/Soundicly/jnanoid-enhanced)
+- [Java](https://github.com/wosherco/jnanoid-enhanced)
 - [Kotlin](https://github.com/viascom/nanoid-kotlin)
 - [MySQL/MariaDB](https://github.com/viascom/nanoid-mysql-mariadb)
 - [Nim](https://github.com/icyphox/nanoid.nim)

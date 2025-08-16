@@ -1,0 +1,20 @@
+{
+  "name": "@sitnik/nanoid",
+  "version": "5.1.5",
+  "license": "MIT",
+  "exports": {
+    ".": "./index.browser.js",
+    "./non-secure": "./non-secure/index.js"
+  },
+  "publish": {
+    "include": [
+      "LICENSE",
+      "README.md",
+      "index.d.ts",
+      "index.browser.js",
+      "non-secure/index.d.ts",
+      "non-secure/index.js",
+      "url-alphabet/index.js"
+    ]
+  }
+}

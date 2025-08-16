@@ -3,7 +3,7 @@
 <img src="https://ai.github.io/nanoid/logo.svg" align="right"
      alt="Nano ID logo by Anton Lovchikov" width="180" height="94">
 
-[English](./README.md) | [Русский](./README.ru.md) | **简体中文** | [Bahasa Indonesia](./README.id-ID.md)
+[English](./README.md) | [日本語](./README.ja.md) | [Русский](./README.ru.md) | **简体中文** | [Bahasa Indonesia](./README.id-ID.md) | [한국어](./README.ko.md)
 
 一个小巧、安全、URL友好、唯一的 JavaScript 字符串ID生成器。
 
@@ -47,8 +47,8 @@ model.id = nanoid() //=> "V1StGXR8_Z5jdHi6B-myT"
   - [React](#react)
   - [React Native](#react-native)
   - [PouchDB and CouchDB](#pouchdb-and-couchdb)
-  - [Web Workers](#web-workers)
   - [CLI](#cli)
+  - [TypeScript](#typescript)
   - [其他编程语言](#其他编程语言)
 - [工具](#工具)
 
@@ -328,23 +328,6 @@ db.put({
 ```
 
 
-### Web Workers
-
-Web Workers 无法访问安全的随机生成器.
-
-当ID应该是不可预测的时候，安全性对ID很重要。
-例如，在 "按 URL 访问"的链接生成中。
-如果你不需要不可预测的 ID，但你需要使用 Web Workers。
-你可以使用非安全的 ID 生成器。
-
-```js
-import { nanoid } from 'nanoid/non-secure'
-nanoid() //=> "Uakgb_J5m9g-0JDMbcJqLJ"
-```
-
-注意：非安全的ID更容易受到碰撞攻击。
-
-
 ### CLI
 
 你可以通过调用 `npx nanoid` 在终端获得唯一的 ID。你只需要
@@ -370,6 +353,28 @@ $ npx nanoid --alphabet abc --size 15
 bccbcabaabaccab
 ```
 
+### TypeScript
+
+Nano ID 允许将生成的字符串转换为 TypeScript 中的不透明字符串。 例如：
+
+```ts
+declare const userIdBrand: unique symbol
+type UserId = string & { [userIdBrand]: true }
+
+// 使用显式类型参数:
+mockUser(nanoid<UserId>())
+
+interface User {
+  id: UserId
+  name: string
+}
+
+const user: User = {
+  // 自动转换为 UserId:
+  id: nanoid(),
+  name: 'Alice'
+}
+```
 
 ### 其他编程语言
 
@@ -383,11 +388,12 @@ Nano ID 已被移植到许多语言。 你可以使用下面这些移植，获�
 * [Dart & Flutter](https://github.com/pd4d10/nanoid-dart)
 * [Deno](https://github.com/ianfabs/nanoid)
 * [Elixir](https://github.com/railsmechanic/nanoid)
+* [Gleam](https://github.com/0xca551e/glanoid)
 * [Go](https://github.com/jaevor/go-nanoid)
 * [Haskell](https://github.com/MichelBoucey/NanoID)
 * [Haxe](https://github.com/flashultra/uuid)
 * [Janet](https://sr.ht/~statianzo/janet-nanoid/)
-* [Java](https://github.com/Soundicly/jnanoid-enhanced)
+* [Java](https://github.com/wosherco/jnanoid-enhanced)
 * [Kotlin](https://github.com/viascom/nanoid-kotlin)
 * [MySQL/MariaDB](https://github.com/viascom/nanoid-mysql-mariadb)
 * [Nim](https://github.com/icyphox/nanoid.nim)
